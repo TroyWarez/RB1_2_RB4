@@ -34,6 +34,12 @@ int g_virationIntensity;
 
 uint32_t* buttonMapping;
 
+const uint16_t RB1vid = 0x12BA; //RB1 Guitar Vendor Id and Product Id
+const uint16_t RB1pid = 0x0200; 
+
+
+
+
 inline int deadzone_apply(ScePadData* pData);
 inline uint8_t check_deadzone(uint8_t input, uint8_t deadZone);
 
