@@ -1,15 +1,12 @@
-// Author: jocover @ https://github.com/jocover
-// Repository: https://github.com/GoldHEN/GoldHEN_Plugins_Repository
-
 #include "plugin_common.h"
 #include "Common.h"
 #include <Patcher.h>
 #include "config.h"
 #include "pad.h"
 
-attr_public const char* g_pluginName = "gamepad_helper";
-attr_public const char* g_pluginDesc = "(null)";
-attr_public const char* g_pluginAuth = "jocover";
+attr_public const char* g_pluginName = "RB1_2_RB4";
+attr_public const char* g_pluginDesc = "Turn your Rockband 1 guitar into a Rockband 4 guitar to enable navigation of the playstation menu and persistent sign in of your PSN profile.";
+attr_public const char* g_pluginAuth = "TroyWarez";
 attr_public u32 g_pluginVersion = 0x00000100;  // 1.00
 
 HOOK_INIT(scePadRead);
@@ -24,6 +21,10 @@ Patcher* scePadReadStateExtPatcher;
 
 #define JOY_CENTER_POS 0x80
 
+#define RB1_VID 0x12BA  //RB1 Guitar Vendor Id
+#define RB1_PID 0x0200  //RB1 Guitar Product Id
+
+
 bool g_enableDeadZone;
 int g_deadZoneLeft;
 int g_deadZoneRight;
@@ -34,7 +35,7 @@ int g_virationIntensity;
 
 uint32_t* buttonMapping;
 
-const uint16_t RB1vid = 0x12BA; //RB1 Guitar Vendor Id and Product Id
+const uint16_t RB1vid = 0x12BA;
 const uint16_t RB1pid = 0x0200; 
 
 
