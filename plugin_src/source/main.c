@@ -24,6 +24,8 @@ Patcher* scePadReadStateExtPatcher;
 #define RB1_VID 0x12BA  //RB1 Guitar Vendor Id
 #define RB1_PID 0x0200  //RB1 Guitar Product Id
 
+#define RB4_VID 0x0738  //RB4 Guitar Vendor Id
+#define RB4_PID 0xA221  //RB4 Guitar Product Id
 
 bool g_enableDeadZone;
 int g_deadZoneLeft;
