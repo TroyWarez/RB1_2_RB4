@@ -26,6 +26,7 @@ Patcher* scePadReadStateExtPatcher;
 
 #define RB4_VID 0x0738  //RB4 Guitar Vendor Id
 #define RB4_PID 0x8261  //RB4 Guitar Product Id
+#define RB4_DEVICE_ID "MadCatz Stratocaster"
 #define RB4_DEVICE_NAME "Mad Catz Guitar for RB4"
 
 bool g_enableDeadZone;
