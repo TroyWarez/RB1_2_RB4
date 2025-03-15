@@ -12,41 +12,34 @@ attr_public u32 g_pluginVersion = 0x00000100;  // 1.00
 HOOK_INIT(scePadRead);
 HOOK_INIT(scePadReadState);
 HOOK_INIT(scePadSetVibration);
+HOOK_INIT(scePadOpenExt);
+HOOK_INIT(scePadGetExtControllerInformation);
+
 
 Patcher* scePadReadExtPatcher;
 Patcher* scePadReadStateExtPatcher;
+Patcher* scePadOpenExtPatcher;
+Patcher* scePadGetExtControllerInformationPatcher;
 
-#define PLUGIN_CONFIG_PATH GOLDHEN_PATH "/gamepad.ini"
 #define PLUGIN_DEFAULT_SECTION "default"
-
-#define JOY_CENTER_POS 0x80
 
 #define RB1_VID 0x12BA  //RB1 Guitar Vendor Id
 #define RB1_PID 0x0200  //RB1 Guitar Product Id
+/*
+Hooked funcs for rb1
+ sceUsbdGetDeviceList
+ sceUsbdGetDeviceDescriptor
+*/
 
 #define RB4_VID 0x0738  //RB4 Guitar Vendor Id
 #define RB4_PID 0x8261  //RB4 Guitar Product Id
 #define RB4_DEVICE_ID "MadCatz Stratocaster"
 #define RB4_DEVICE_NAME "Mad Catz Guitar for RB4"
-
-bool g_enableDeadZone;
-int g_deadZoneLeft;
-int g_deadZoneRight;
-
-bool g_enableCustomTouchPad;
-bool g_enableCustomButton;
-int g_virationIntensity;
-
-uint32_t* buttonMapping;
-
-inline int deadzone_apply(ScePadData* pData);
-inline uint8_t check_deadzone(uint8_t input, uint8_t deadZone);
-
-bool file_exists(const char* filename) {
-    struct stat buff;
-    return stat(filename, &buff) == 0 ? true : false;
-}
-
+/*
+Hooked funcs for rb4
+scePadOpenExt
+scePadGetExtControllerInformation
+*/
 int scePadSetVibration_hook(int32_t handle, const ScePadVibrationParam* pParam) {
     if (g_virationIntensity == PAD_VIRATION_INTENSITY_OFF) {
         return 0;
@@ -223,6 +216,11 @@ s32 attr_public plugin_load(s32 argc, const char* argv[]) {
     snprintf(module, 256, "/%s/common/lib/%s", sceKernelGetFsSandboxRandomWord(), "libScePad.sprx");
     int h = 0;
     sys_dynlib_load_prx(module, &h);
+
+    char module2[256];
+    snprintf(module, 256, "/%s/common/lib/%s", sceKernelGetFsSandboxRandomWord(), "libSceUsbd.prx");
+    int h2 = 0;
+    sys_dynlib_load_prx(module2, &h2);
 
     scePadReadExtPatcher = (Patcher*)malloc(sizeof(Patcher));
     scePadReadStateExtPatcher = (Patcher*)malloc(sizeof(Patcher));
