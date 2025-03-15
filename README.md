@@ -1,2 +1,2 @@
-# Rockband 1 Guitar to Rockband 4 Plugin for Jailbroken PS4s
+# Rockband 1 Guitar to Rockband 4 Guitar Plugin for Jailbroken PS4s
 The rockband 1 guitar is (usually) one the cheapest options for a guitar for Rockband 4. However there are some issues with using it on the PS4, firstly you can't navigate the PS4 menu with it. Secondly, the Playstation button doesn't work at all. Finally, you will always be signed in as a guest at first and you will never have an associationed PSN profile with your Rockband 1 guitar.
