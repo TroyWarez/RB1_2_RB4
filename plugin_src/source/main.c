@@ -23,22 +23,22 @@ Patcher* scePadGetExtControllerInformationPatcher;
 
 #define PLUGIN_DEFAULT_SECTION "default"
 
-#define RB1_VID 0x12BA  //RB1 Guitar Vendor Id
-#define RB1_PID 0x0200  //RB1 Guitar Product Id
+#define PS3_STRATOCASTER_VENDOR_ID 0x12BA
+#define PS3_STRATOCASTER_PRODUCT_ID 0x0200
 /*
 Hooked funcs for rb1
  sceUsbdGetDeviceList
  sceUsbdGetDeviceDescriptor
 */
 
-#define RB4_VID 0x0738  //RB4 Guitar Vendor Id
-#define RB4_PID 0x8261  //RB4 Guitar Product Id
-#define RB4_DEVICE_ID "MadCatz Stratocaster"
-#define RB4_DEVICE_NAME "Mad Catz Guitar for RB4"
+#define PS4_STRATOCASTER_VENDOR_ID 0x0738
+#define PS4_STRATOCASTER_PRODUCT_ID 0x8261
+#define STR_MANUFACTURER "MadCatz Stratocaster"
+#define STR_PRODUCT "Mad Catz Guitar for RB4"
 /*
 Hooked funcs for rb4
-scePadOpenExt
-scePadGetExtControllerInformation
+ scePadOpenExt
+ scePadGetExtControllerInformation
 */
 int scePadSetVibration_hook(int32_t handle, const ScePadVibrationParam* pParam) {
     if (g_virationIntensity == PAD_VIRATION_INTENSITY_OFF) {
