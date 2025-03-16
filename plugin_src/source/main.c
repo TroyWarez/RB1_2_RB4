@@ -39,24 +39,6 @@ Hooked funcs for rb4
  scePadOpenExt
  scePadGetExtControllerInformation
 */
-uint8_t check_deadzone(uint8_t input, uint8_t deadZone) {
-    if (abs(input - JOY_CENTER_POS) <= deadZone) {
-        return JOY_CENTER_POS;
-    }
-
-    return input;
-};
-
-int deadzone_apply(ScePadData* pData) {
-    if (g_enableDeadZone) {
-        pData->leftStick.x = check_deadzone(pData->leftStick.x, g_deadZoneLeft);
-        pData->leftStick.y = check_deadzone(pData->leftStick.y, g_deadZoneLeft);
-        pData->rightStick.x = check_deadzone(pData->rightStick.x, g_deadZoneRight);
-        pData->rightStick.y = check_deadzone(pData->rightStick.y, g_deadZoneRight);
-    }
-    return 0;
-}
-
 int custom_touchpad(int32_t handle, ScePadData* pData) {
     if (g_enableCustomTouchPad) {
         if (pData->buttons & SCE_PAD_BUTTON_TOUCH_PAD) {
