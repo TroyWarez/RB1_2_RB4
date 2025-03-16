@@ -32,7 +32,7 @@ Hooked funcs for rb1
 
 #define PS4_STRATOCASTER_VENDOR_ID 0x0738
 #define PS4_STRATOCASTER_PRODUCT_ID 0x8261
-#define STR_MANUFACTURER "MadCatz Stratocaster"
+#define STR_MANUFACTURER "Mad Catz, Inc."
 #define STR_PRODUCT "Mad Catz Guitar for RB4"
 /*
 Hooked funcs for rb4
