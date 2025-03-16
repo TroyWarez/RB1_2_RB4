@@ -11,7 +11,6 @@ attr_public u32 g_pluginVersion = 0x00000100;  // 1.00
 
 HOOK_INIT(scePadRead);
 HOOK_INIT(scePadReadState);
-HOOK_INIT(scePadSetVibration);
 HOOK_INIT(scePadOpenExt);
 HOOK_INIT(scePadGetExtControllerInformation);
 
@@ -40,28 +39,6 @@ Hooked funcs for rb4
  scePadOpenExt
  scePadGetExtControllerInformation
 */
-int scePadSetVibration_hook(int32_t handle, const ScePadVibrationParam* pParam) {
-    if (g_virationIntensity == PAD_VIRATION_INTENSITY_OFF) {
-        return 0;
-    }
-
-    ScePadVibrationParam Param;
-
-    if (g_virationIntensity == PAD_VIRATION_INTENSITY_MEDIUM) {
-        Param.largeMotor = pParam->largeMotor * 0.6;
-        Param.smallMotor = pParam->smallMotor * 0.6;
-    }
-
-    if (g_virationIntensity == PAD_VIRATION_INTENSITY_WEAK) {
-        Param.largeMotor = pParam->largeMotor * 0.3;
-        Param.smallMotor = pParam->smallMotor * 0.3;
-    }
-
-    int ret = 0;
-    ret = HOOK_CONTINUE(scePadSetVibration, int (*)(int32_t, const ScePadVibrationParam*), handle, &Param);
-    return ret;
-}
-
 uint8_t check_deadzone(uint8_t input, uint8_t deadZone) {
     if (abs(input - JOY_CENTER_POS) <= deadZone) {
         return JOY_CENTER_POS;
@@ -329,10 +306,6 @@ s32 attr_public plugin_load(s32 argc, const char* argv[]) {
         g_deadZoneRight = 0xd;
     }
 
-    if (g_virationIntensity != PAD_VIRATION_INTENSITY_STRONG) {
-        HOOK32(scePadSetVibration);
-    }
-
     return 0;
 }
 
@@ -340,10 +313,6 @@ s32 attr_public plugin_unload(s32 argc, const char* argv[]) {
     final_printf("[GoldHEN] <%s\\Ver.0x%08x> %s\n", g_pluginName, g_pluginVersion, __func__);
     UNHOOK(scePadRead);
     UNHOOK(scePadReadState);
-
-    if (g_virationIntensity != PAD_VIRATION_INTENSITY_STRONG) {
-        UNHOOK(scePadSetVibration);
-    }
 
     Patcher_Destroy(scePadReadExtPatcher);
     Patcher_Destroy(scePadReadStateExtPatcher);
