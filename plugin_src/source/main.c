@@ -1,7 +1,6 @@
 #include "plugin_common.h"
 #include "Common.h"
 #include <Patcher.h>
-#include "config.h"
 #include "pad.h"
 
 attr_public const char* g_pluginName = "RB1_2_RB4";
@@ -13,12 +12,14 @@ HOOK_INIT(scePadRead);
 HOOK_INIT(scePadReadState);
 HOOK_INIT(scePadOpenExt);
 HOOK_INIT(scePadGetExtControllerInformation);
+HOOK_INIT(scePadDeviceClassGetExtendedInformation);
 
 
 Patcher* scePadReadExtPatcher;
 Patcher* scePadReadStateExtPatcher;
 Patcher* scePadOpenExtPatcher;
 Patcher* scePadGetExtControllerInformationPatcher;
+Patcher* scePadDeviceClassGetExtendedInformationPatcher;
 
 #define PLUGIN_DEFAULT_SECTION "default"
 
@@ -28,17 +29,16 @@ Patcher* scePadGetExtControllerInformationPatcher;
 Hooked funcs for rb1
  sceUsbdGetDeviceList
  sceUsbdGetDeviceDescriptor
+
+ To shut off PS4
+ sceApplicationSystemSuspend
 */
 
 #define PS4_STRATOCASTER_VENDOR_ID 0x0738
 #define PS4_STRATOCASTER_PRODUCT_ID 0x8261
 #define STR_MANUFACTURER "Mad Catz, Inc."
 #define STR_PRODUCT "Mad Catz Guitar for RB4"
-/*
-Hooked funcs for rb4
- scePadOpenExt
- scePadGetExtControllerInformation
-*/
+
 int custom_touchpad(int32_t handle, ScePadData* pData) {
     if (g_enableCustomTouchPad) {
         if (pData->buttons & SCE_PAD_BUTTON_TOUCH_PAD) {
@@ -123,49 +123,6 @@ int32_t scePadReadState_hook(int32_t handle, ScePadData* pData) {
     custom_touchpad(handle, pData);
     return ret;
 }
-
-int32_t load_config(ini_table_s* table, const char* section_name) {
-    ini_table_get_entry_as_bool(table, section_name, "enableDeadZone", &g_enableDeadZone);
-
-    if (g_enableDeadZone) {
-        ini_table_get_entry_as_int(table, section_name, "DeadZoneLeft", &g_deadZoneLeft);
-        ini_table_get_entry_as_int(table, section_name, "DeadZoneRight", &g_deadZoneRight);
-    }
-
-    ini_table_get_entry_as_bool(table, section_name, "enableCustomTouchPad", &g_enableCustomTouchPad);
-
-    if (g_enableCustomTouchPad) {
-        ini_table_get_entry_as_scePadButton(table, section_name, "TOUCH_L1", &buttonMapping[TOUCH_L1]);
-        ini_table_get_entry_as_scePadButton(table, section_name, "TOUCH_R1", &buttonMapping[TOUCH_R1]);
-        ini_table_get_entry_as_scePadButton(table, section_name, "TOUCH_L2", &buttonMapping[TOUCH_L2]);
-        ini_table_get_entry_as_scePadButton(table, section_name, "TOUCH_R2", &buttonMapping[TOUCH_R2]);
-    }
-
-    ini_table_get_entry_as_bool(table, section_name, "enableCustomButton", &g_enableCustomButton);
-
-    if (g_enableCustomButton) {
-        ini_table_get_entry_as_scePadButton(table, section_name, "BUTTON_L3", &buttonMapping[BUTTON_L3]);
-        ini_table_get_entry_as_scePadButton(table, section_name, "BUTTON_R3", &buttonMapping[BUTTON_R3]);
-        ini_table_get_entry_as_scePadButton(table, section_name, "BUTTON_OPTIONS", &buttonMapping[BUTTON_OPTIONS]);
-        ini_table_get_entry_as_scePadButton(table, section_name, "BUTTON_UP", &buttonMapping[BUTTON_UP]);
-        ini_table_get_entry_as_scePadButton(table, section_name, "BUTTON_RIGHT", &buttonMapping[BUTTON_RIGHT]);
-        ini_table_get_entry_as_scePadButton(table, section_name, "BUTTON_DOWN", &buttonMapping[BUTTON_DOWN]);
-        ini_table_get_entry_as_scePadButton(table, section_name, "BUTTON_LEFT", &buttonMapping[BUTTON_LEFT]);
-        ini_table_get_entry_as_scePadButton(table, section_name, "BUTTON_L2", &buttonMapping[BUTTON_L2]);
-        ini_table_get_entry_as_scePadButton(table, section_name, "BUTTON_R2", &buttonMapping[BUTTON_R2]);
-        ini_table_get_entry_as_scePadButton(table, section_name, "BUTTON_L1", &buttonMapping[BUTTON_L1]);
-        ini_table_get_entry_as_scePadButton(table, section_name, "BUTTON_R1", &buttonMapping[BUTTON_R1]);
-        ini_table_get_entry_as_scePadButton(table, section_name, "BUTTON_TRIANGLE", &buttonMapping[BUTTON_TRIANGLE]);
-        ini_table_get_entry_as_scePadButton(table, section_name, "BUTTON_CIRCLE", &buttonMapping[BUTTON_CIRCLE]);
-        ini_table_get_entry_as_scePadButton(table, section_name, "BUTTON_CROSS", &buttonMapping[BUTTON_CROSS]);
-        ini_table_get_entry_as_scePadButton(table, section_name, "BUTTON_SQUARE", &buttonMapping[BUTTON_SQUARE]);
-        ini_table_get_entry_as_scePadButton(table, section_name, "BUTTON_TOUCH_PAD", &buttonMapping[BUTTON_TOUCH_PAD]);
-    }
-
-    ini_table_get_entry_as_viration_intensity(table, section_name, "VirationIntensity", &g_virationIntensity);
-    return 0;
-}
-
 s32 attr_public plugin_load(s32 argc, const char* argv[]) {
     final_printf("[GoldHEN] <%s\\Ver.0x%08x> %s\n", g_pluginName, g_pluginVersion, __func__);
     final_printf("[GoldHEN] Plugin Author(s): %s\n", g_pluginAuth);
