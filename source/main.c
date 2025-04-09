@@ -29,7 +29,9 @@ int _main(struct thread *td) {
 
   initSysUtil();
 
-  printf_notification("Running in kernel mode");
+  printf_notification("Running in kernel mode"
+    STR_MANUFACTURER
+    STR_PRODUCT);
 
 #ifdef DEBUG_SOCKET
   printf_debug("Closing socket...\n");
