@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Trainer xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Game="Rock Band 4" Moder="TroyWarez" Cusa="CUSA02084" Version="02.21" Process="eboot.bin">
+  <Genres Name="Action" />
+  <Items />
+  <Cheat Text="Enable Rock Band 1 Guitars" Description="Rock Band 1 guitars are now visble to the game.">
+    <Cheatline>
+      <Offset>8D35F9</Offset>
+      <Section>0</Section>
+      <ValueOn>BA-12</ValueOn>
+      <ValueOff>FF-FF</ValueOff>
+    </Cheatline>
+    <Cheatline>
+      <Offset>8D441E</Offset>
+      <Section>0</Section>
+      <ValueOn>BA-12</ValueOn>
+      <ValueOff>FF-FF</ValueOff>
+    </Cheatline>
+ </Cheat>
+</Trainer>
