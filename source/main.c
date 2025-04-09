@@ -26,7 +26,7 @@ int _main(struct thread *td) {
 #endif
 
   jailbreak();
-
+  //ioctl();
   initSysUtil();
 
   printf_notification("Running in kernel mode"
