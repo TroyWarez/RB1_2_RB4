@@ -34,6 +34,7 @@ Hooked funcs for rb1
  sceApplicationSystemSuspend
 */
 
+#define PS_BUTTON 0x10000
 #define PS4_STRATOCASTER_VENDOR_ID 0x0738
 #define PS4_STRATOCASTER_PRODUCT_ID 0x8261
 #define STR_MANUFACTURER "Mad Catz, Inc."
