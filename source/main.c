@@ -9,11 +9,9 @@
 #define PS_BUTTON 0x10000
 #define PS4_STRATOCASTER_VENDOR_ID 0x0738
 #define PS4_STRATOCASTER_PRODUCT_ID 0x8261
-#define STR_MANUFACTURER "Mad Catz, Inc."
+#define DEVICE_NAME  "Mad Catz, Inc."
 #define STR_PRODUCT "Mad Catz Guitar for RB4"
-
 #include "ps4.h"
-
 int _main(struct thread *td) {
   UNUSED(td);
 
@@ -24,14 +22,12 @@ int _main(struct thread *td) {
   initNetwork();
   DEBUG_SOCK = SckConnect(DEBUG_IP, DEBUG_PORT);
 #endif
-
   jailbreak();
-  //ioctl();
   initSysUtil();
+  int ret = syscall(132, 0);
+  //syscall(498, 0);
 
-  printf_notification("Running in kernel mode"
-    STR_MANUFACTURER
-    STR_PRODUCT);
+  printf_notification("Returned from mknod %i", ret);
 
 #ifdef DEBUG_SOCKET
   printf_debug("Closing socket...\n");
